@@ -1,15 +1,18 @@
 body {
 	background-color: lightblue;
 	background-image: url(roma.jpg);
+	background-size: 1200px 1200px;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 div {
-	background-color: rgba(255,255,255,0.5);
-	border-color: rgba(160,82,45,0.5);
+	background-color: rgba(255,255,255,0.7);
+	border-color: rgba(160,82,45,0.7);
 	border-style: solid;
 	border-width: 15px;
-	border-radius: 20px;
-	margin: 100px;
+	border-radius: 25px;
+	margin: 150px;
 	width: 300px;
 	padding: 20px;
 	font-family: arial;
