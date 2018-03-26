@@ -1,0 +1,18 @@
+body {
+	background-color: lightblue;
+	background-image: url(roma.jpg);
+}
+
+div {
+	background-color: rgba(255,255,255,0.5);
+	border-color: rgba(160,82,45,0.5);
+	border-style: solid;
+	border-width: 15px;
+	border-radius: 20px;
+	margin: 100px;
+	width: 300px;
+	padding: 20px;
+	font-family: arial;
+	text-align: center;
+	box-shadow: 2px 2px 5px 1px gray inset;
+}
