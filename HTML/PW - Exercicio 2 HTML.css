@@ -1,0 +1,27 @@
+h1 {
+	color: darkblue;
+	font-family: fantasy;
+}
+
+h3 {
+	color: darkblue;
+	font-family: fantasy;
+}
+
+h4 {
+	color: darkblue;
+	font-family: fantasy;
+}
+
+body {
+	background: rgb(135,206,235);
+	font-family: fantasy;
+}
+
+fieldset {
+	background: lightblue;
+	border: 2px;
+	border-style: double;
+	border-radius: 10px;
+	color: darkblue;
+}
