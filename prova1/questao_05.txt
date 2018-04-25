@@ -1,0 +1,27 @@
+Histórico de commits
+
+icomp@icomp-pc ~/ProgWeb/prova1 $ git log
+commit 1b70a754e736824696cf75c237c1179a5cd39d7b
+Author: Clarice <cmfc@icomp.ufam.edu.br>
+Date:   Wed Apr 25 09:27:33 2018 -0400
+
+    Adicionei questões 1, 2 e 3
+
+commit 4e5a43eac281f2d1e842780976cce50e21224cad
+Author: ClariceMFC <cmfc@icomp.ufam.edu.br>
+Date:   Mon Mar 26 09:42:06 2018 -0400
+
+    Atualizei o exercício 2 de CSS
+
+commit bc668675fe171c69d74aded7c34254e24ea7f62a
+Author: ClariceMFC <cmfc@icomp.ufam.edu.br>
+Date:   Mon Mar 26 09:25:09 2018 -0400
+
+    Recoloquei o formulário HTML
+:
+
+5-	a) O comando git status serve para verificarmos o estado dos arquivos da máquina local.
+		Por ele podemos saber quais arquivos foram modificados e ainda não salvos no git.
+
+	b) O comando .gitignore serve para ignorar determinados arquivos ao salvarmos novos arquivos no git.
+		Arquivos desnecessários, como, por exemplo, os ".o" gerados automaticamente após a compilação podem ser ignorados no commit.
