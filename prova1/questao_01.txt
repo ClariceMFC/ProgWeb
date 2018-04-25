@@ -1,0 +1,4 @@
+Erro 1 - A tag "<strong>" aberta na linha 17 não é fechada. É preciso adicionar "</strong>" após ela.
+Erro 2 - Na linha 08, o valor de "color" deve ser passado com ":" e não "=". O mesmo tipo de erro se repete na linha seguinte.
+Erro 3 - Nas linhas 23 e 24, o valor das variáveis "nome" e "getNome" deve ser passado com "=" e não com ":".
+Erro 4 - Na linha 22, 
