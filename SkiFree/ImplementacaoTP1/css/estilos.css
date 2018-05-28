@@ -19,6 +19,20 @@
    height: 32px;
 }
 
+.caido {
+   background-image: url(skier.png);
+   background-position: -81px -81px;
+   width: 37px;
+   height: 27px;
+}
+
+.morto {
+   background-image: url(skier.png);
+   background-position: -239px -268px;
+   width: 33px;
+   height: 32px;
+}
+
 .arvore {
    background-image: url(obstacles.png);
    background-position: -0px -31px;   
@@ -60,10 +74,18 @@
 }
 
 .cogumelo {
-   background-image: url(skier.png);
-   background-position: -269px -49px;   
-   width: 13px;
-   height: 16px;   
+   background-image: url(obstacles.png);
+   background-position: -269px -47px;   
+   width: 12px;
+   height: 15px;   
+   position: absolute;
+}
+
+.semcogumelo {
+   background-image: url(obstacles.png);
+   background-position: -1px -1px;   
+   width: 12px;
+   height: 15px;   
    position: absolute;
 }
 
@@ -80,6 +102,49 @@
    background-position: -22px -100px;   
    width: 27px;
    height: 30px;   
+   position: absolute;
+
+   animation-name: arbusto;
+   animation-iteration-count: infinite;
+}
+
+.monstrocomendoesquiador1 {
+   background-image: url(skier.png);
+   background-position: -122px -113px;   
+   width: 36px;
+   height: 42px;   
+   position: absolute;
+}
+
+.monstrocomendoesquiador2 {
+   background-image: url(skier.png);
+   background-position: -156px -112px;   
+   width: 32px;
+   height: 43px;   
+   position: absolute;
+}
+
+.monstrocomendoesquiador3 {
+   background-image: url(skier.png);
+   background-position: -189px -113px;   
+   width: 29px;
+   height: 42px;   
+   position: absolute;
+}
+
+.monstrocomendoesquiador4 {
+   background-image: url(skier.png);
+   background-position: -218px -111px;   
+   width: 25px;
+   height: 44px;   
+   position: absolute;
+}
+
+.monstrocomendoesquiador5 {
+   background-image: url(skier.png);
+   background-position: -243px -115px;   
+   width: 29px;
+   height: 40px;   
    position: absolute;
 }
 

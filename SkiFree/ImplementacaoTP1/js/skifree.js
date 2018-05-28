@@ -6,13 +6,14 @@
 
 	const STOP_RUN_TIMER = 5000; // O tempo que o player fica esquiando mais rápido em milisegundos
 	const BASE_SPEED = 2; // Velocidade base do player
-	const BOOSTED_SPEED = 4; // O ideal seria 3 para fazer sentido 20 m/s e 30 m/s porém 4 fica mais consistente
+	const BOOSTED_SPEED = 3; // O ideal é 3 para fazer sentido (20 m/s e 30 m/s), porém com 4 fica mais interessante...
+   
    	const PROB_ARVORE = 2;
    	const PROB_ARVOREGRANDE = 2;
    	const PROB_ROCHA = 2;
    	const PROB_TOCODEARVORE = 2;
    	const PROB_CACHORRO = 2;
-   	const PROB_COGUMELO = 2;
+   	const PROB_COGUMELO = 1;
    	const PROB_ARBUSTOEMCHAMAS = 2;
 
 	var gameLoop;
@@ -20,10 +21,15 @@
 	var playerBoost; // Controlador para ativar e desativar o boost speed do player
 	var monsterTimer; // Contador até o monstro aparecer
 	var spawnMonster; // Define quando o mosntro será spawnado
+	var dieAnim; // Auxiliar para animar a morte do player
 	var montanha;
 	var skier;
 	var hud; // Controlador para desenhar os textos de e os retângulos fora da tela assim como organizar os pontos
 	var direcoes = ['para-esquerda','para-frente','para-direita']
+	var colidiu; // Controlador que define em que o player colidiu 1 = obstáculo / 2 = cogumelo / 3 = monstro
+   	var lastColision; // Controlador para saber qual foi a última colisão do player
+
+	
 	var arvores = [];
 	var arvoresgrandes = [];
 	var rochas = [];
@@ -32,25 +38,24 @@
    	var cogumelos = [];
    	var monstros = [];
    	var arbustosemchamas = [];
-   	var colidiu; // Controlador que define em que o player colidiu 1 = obstáculo / 2 = cogumelo / 3 = monstro
-   	var lastColision; // Controlador para saber qual foi a última colisão do player
-
+   	
 	// Essa parte é necessária para desenhar os retângulos e o texto no canvas
-		var canvas = document.createElement('canvas');
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		canvas.style.position='absolute';
-		canvas.style.left=0;
-		canvas.style.top=0;
-		canvas.style.zIndex=100000;
-		document.body.appendChild(canvas);
-		var context = canvas.getContext('2d');
+	var canvas = document.createElement('canvas');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	canvas.style.position='absolute';
+	canvas.style.left=0;
+	canvas.style.top=0;
+	canvas.style.zIndex=100000;
+	document.body.appendChild(canvas);
+	var context = canvas.getContext('2d');
 
 	function init () {
 		montanha = new Montanha();
   		skier = new Skier();
   		hud = new Hud();
   		colidiu = 0; // Inicia com zero por não ter colidido em nada ainda
+  		dieAnim = 1;
   		spawnMonster = 0; // Vai spawnar o monstro quando for 1
   		monsterTimer = 0; // Seta o início do timer para spawnar o monstro
   		setInterval(incPontuation,1000); // Incrementa a pontuação a cada 1 segundo
@@ -60,13 +65,15 @@
 	}
 
 	window.addEventListener('keydown', function (e) {
-  		if (e.key == 'a')	
-  			skier.mudarDirecao(-1);
-  		else if (e.key == 'd')
-  			skier.mudarDirecao(1)
-  		else if (e.key == 'f' && actualSpeed==BASE_SPEED) { // Ativa o boost de speed se não estiver já ativo
-  			actualSpeed = BOOSTED_SPEED;
-  			playerBoost = setInterval(stopRun, STOP_RUN_TIMER);
+		if (skier.element.className != 'caido' && skier.element.className != 'morto' && skier.element.className != 'monstrocomendoesquiador1' && skier.element.className != 'monstrocomendoesquiador2' && skier.element.className != 'monstrocomendoesquiador3' && skier.element.className != 'monstrocomendoesquiador4' && skier.element.className != 'monstro'){
+	  		if (e.key == 'a')	
+	  			skier.mudarDirecao(-1);
+	  		else if (e.key == 'd')
+	  			skier.mudarDirecao(1)
+	  		else if (e.key == 'f' && actualSpeed==BASE_SPEED) { // Ativa o boost de speed se não estiver já ativo
+	  			actualSpeed = BOOSTED_SPEED;
+	  			playerBoost = setInterval(stopRun, STOP_RUN_TIMER);
+	  		}
   		}
 	});
 
@@ -140,23 +147,29 @@
 			}
 	  	}
 
+	  	this.newImage = function(image) {
+	  		this.element.className = image;
+	  	}
+
 		this.andar = function () {
-		 	if (this.direcao == 0){
-		 		if (this.element.style.left.substr(0,this.element.style.left.length-2) > "0") // como tem sempre o px no final, pra comparar se é maior ou menor, o substr pega somete os números sem os dois últimos caracteres que são "px"
-		    		this.element.style.left = (parseInt(this.element.style.left)-1*4) + "px";
-		    	else{
-	    			this.mudarDirecao(1);
-	    			this.mudarDirecao(1);// se fosse para ele ir para baixo so precisava remover essa linha e a de baixo, que são as que invertem o player de lado
-	    			this.element.style.left = (parseInt(this.element.style.left)+1*4) + "px";
-		    	}
-		    }else if (this.direcao == 2){
-		 		if (this.element.style.left.substr(0,this.element.style.left.length-2) < TAMX-8) // como tem sempre o px no final, pra comparar se é maior ou menor, o substr pega somete os números sem os dois últimos caracteres que são "px"
-	    			this.element.style.left = (parseInt(this.element.style.left)+1*4) + "px";
-		    	else{
-	    			this.mudarDirecao(-1);
-	    			this.mudarDirecao(-1);// se fosse para ele ir para baixo so precisava remover essa linha e a de baixo, que são as que invertem o player de lado
-		    		this.element.style.left = (parseInt(this.element.style.left)-1*4) + "px";
-		    	}
+			if (skier.element.className != 'caido' && skier.element.className != 'morto' && skier.element.className != 'monstrocomendoesquiador1' && skier.element.className != 'monstrocomendoesquiador2' && skier.element.className != 'monstrocomendoesquiador3' && skier.element.className != 'monstrocomendoesquiador4' && skier.element.className != 'monstro'){
+			 	if (this.direcao == 0){
+			 		if (this.element.style.left.substr(0,this.element.style.left.length-2) > "0") // como tem sempre o px no final, pra comparar se é maior ou menor, o substr pega somete os números sem os dois últimos caracteres que são "px"
+			    		this.element.style.left = (parseInt(this.element.style.left)-1*4) + "px";
+			    	else{
+		    			this.mudarDirecao(1);
+		    			this.mudarDirecao(1);// se fosse para ele ir para baixo so precisava remover essa linha e a de baixo, que são as que invertem o player de lado
+		    			this.element.style.left = (parseInt(this.element.style.left)+1*4) + "px";
+			    	}
+			    }else if (this.direcao == 2){
+			 		if (this.element.style.left.substr(0,this.element.style.left.length-2) < TAMX-8) // como tem sempre o px no final, pra comparar se é maior ou menor, o substr pega somete os números sem os dois últimos caracteres que são "px"
+		    			this.element.style.left = (parseInt(this.element.style.left)+1*4) + "px";
+			    	else{
+		    			this.mudarDirecao(-1);
+		    			this.mudarDirecao(-1);// se fosse para ele ir para baixo so precisava remover essa linha e a de baixo, que são as que invertem o player de lado
+			    		this.element.style.left = (parseInt(this.element.style.left)-1*4) + "px";
+			    	}
+			   	}
 		   	}
 		}
 	}
@@ -230,7 +243,7 @@
       	//ARVORE
 
       	var random = Math.floor(Math.random() * 1000);
-      	if (random <= PROB_ARVORE) {
+      	if (random <= PROB_ARVORE*6) {
          	var arvore = new Arvore();
          	arvores.push(arvore);
       	}
@@ -245,7 +258,7 @@
       	//ARVORE GRANDE
 
       	var random = Math.floor(Math.random() * 1000);
-      	if (random <= PROB_ARVOREGRANDE*3) {
+      	if (random <= PROB_ARVOREGRANDE*4) {
          	var arvoregrande = new ArvoreGrande();
          	arvoresgrandes.push(arvoregrande);
       	}
@@ -260,7 +273,7 @@
       	//ROCHA
 
       	var random = Math.floor(Math.random() * 1000);
-      	if (random <= PROB_ROCHA*2) {
+      	if (random <= PROB_ROCHA*3) {
          	var rocha = new Rocha();
          	rochas.push(rocha);
       	}
@@ -306,7 +319,7 @@
       	//COGUMELO
 
       	var random = Math.floor(Math.random() * 1000);
-      	if (random <= PROB_COGUMELO*2) {
+      	if (random <= PROB_COGUMELO*1) {
          	var cogumelo = new Cogumelo();
          	cogumelos.push(cogumelo);
       	}
@@ -314,6 +327,7 @@
          	a.element.style.top = (parseInt(a.element.style.top)-1*actualSpeed) + "px";
 			if (colide(skier,a) && lastColision!=a){ // se houve colisão e ele ainda não contou ele vai setar a colisão
      			colidiu=2;
+				a.element.className=null;
      			lastColision=a;
 			}
       	});
@@ -340,6 +354,7 @@
          	var monstro = new Monstro();
          	monstros.push(monstro);
 		}
+		
 		monstros.forEach(function (a) {
 			if (parseInt(a.element.style.top.substr(0,a.element.style.top.length-2),10)>-48){ // se ele ainda está na tela:
 				if (actualSpeed == BASE_SPEED){ // se o player não está correndo
@@ -359,6 +374,7 @@
 
 				if (colide(skier,a) && lastColision!=a){ // se houve colisão e ele ainda não contou ele vai setar a colisão
 	     			colidiu=3;
+	     			a.element.style.top = "-100px";
 	     			lastColision=a;
 				}
 			}else{
@@ -366,21 +382,52 @@
 			}
 	    });
 
-	    if (colidiu>0){ // se houve colisão enfim ele vai reagir ao tipo de colisão
-	    	if (colidiu==1){
-		    	if (skier.vidas>0){ // se ainda não morreu ele vai perder vida
-		    		//imagem dele recebendo dano
-		    		skier.vidas-=1;
-		    	}//else
-		    		// imagem dele perdendo o jogo
-		    }else if (colidiu == 2) // cogumelo heala ele
-		    	skier.vidas+=1;
+		if (skier.element.className != 'caido' && skier.element.className != 'morto' && skier.element.className != 'monstrocomendoesquiador1' && skier.element.className != 'monstrocomendoesquiador2' && skier.element.className != 'monstrocomendoesquiador3' && skier.element.className != 'monstrocomendoesquiador4' && skier.element.className != 'monstro'){
+		    if (colidiu>0){ // se houve colisão enfim ele vai reagir ao tipo de colisão
+		    	if (colidiu==1){
+			    	if (skier.vidas>0){ // se ainda não morreu ele vai perder vida
+			    		skier.element.className = 'caido'; //imagem dele recebendo dano
+			    		skier.vidas-=1;
+			    		//conta tempo até levantar (1 segundo)
+			    		setTimeout(function() {
+	  						skier.element.className = 'para-frente';
+	  						skier.direcao = 1;
+						}, 1000); //1000 milissegundos
+			    	}else{
+			    		skier.element.className = 'morto';// imagem dele perdendo o jogo
+						//conta tempo que vai levar para reiniciar o jogo
+			    		setTimeout(function() {
+	  						gameOver(); //FIM DE JOGO
+						}, 1000); //1000 milissegundos
+			    	}
+			    }else if (colidiu == 2){ // cogumelo heala ele
+			    	skier.vidas+=1;
+			    }else if (colidiu == 3) {
+			    	//mostra animação do monstro //ou era pra mostrar
+			    	actualSpeed = 0;
+			    	skier.direcao = 1;
+			    	setTimeout(dying, 200);
+			    	setTimeout(function() {
+	  					gameOver(); //FIM DE JOGO
+					}, 2500);
+			    }
+			}
 	    	colidiu=0;
 	    }
 
 		colidiu=0; // reseta a colisão para analizar o próximo frame
       	skier.andar();
   		hud.drawHud(); // Vai sempre desenhar a hud, em todos os frames do jogo
+	}
+
+	function dying(){
+		if (dieAnim < 5){
+			skier.newImage('monstrocomendoesquiador'+dieAnim);
+  			dieAnim++;
+			setTimeout(dying, 200);
+  		}else{
+			skier.newImage('monstro');
+  		}
 	}
 
 	function incPontuation() {
@@ -392,7 +439,7 @@
   		clearInterval(playerBoost);
 	}
 
-	function colide(a, b) { // Funcção para checar se dois objetos estão colidindo (bem rudimentar)
+	function colide(a, b) { // Função para checar se dois objetos estão colidindo (bem rudimentar)
 
 	    return !(
 	        (parseInt(a.element.style.top.substr(0,a.element.style.top.length-2),10)  > parseInt(b.element.style.top.substr(0,b.element.style.top.length-2),10)+parseInt(b.element.clientHeight,10)) ||
