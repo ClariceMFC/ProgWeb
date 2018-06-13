@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
@@ -8,6 +10,9 @@ $this->title = 'My Yii Application';
 
     <div class="jumbotron">
         <h1>Congratulations!</h1>
+
+        <?= Html::img('@web/img/icomp.png',['width'=>'400']) ?>
+        <?= Html::a('Home', ['site/index']) ?>
 
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
