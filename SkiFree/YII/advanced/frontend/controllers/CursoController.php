@@ -50,7 +50,7 @@ class CursoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id=1)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),

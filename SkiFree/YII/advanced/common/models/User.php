@@ -186,4 +186,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getCurso() {
+        return $this->hasOne(
+            Curso::className(), ['id' => 'id_curso']
+        );
+    }
+
+    public function afterFind() {
+        $this->created_at = date("d/m/Y", $this->created_at);
+    }
 }
