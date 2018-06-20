@@ -12,6 +12,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $id_curso; //CLARICE ADD
 
 
     /**
@@ -36,6 +37,12 @@ class SignupForm extends Model
         ];
     }
 
+    public function attributeLabels() {                     //CLARICE ADD
+        return [                                            //CLARICE ADD
+            'id_curso' => 'Selecione o seu curso'           //CLARICE ADD
+        ]                                                   //CLARICE ADD
+    }                                                       //CLARICE ADD
+
     /**
      * Signs user up.
      *
@@ -50,6 +57,7 @@ class SignupForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->id_curso = $this->id_curso;                  //CLARICE ADD
         $user->setPassword($this->password);
         $user->generateAuthKey();
         
