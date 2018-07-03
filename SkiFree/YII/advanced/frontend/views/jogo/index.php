@@ -2,7 +2,8 @@
 /* @var $this yii\web\View */
 use yii\helpers\Url;
 
-$this->registerJsFile("");
+$this->registerCssFile("css/estilos.css");
+$this->registerJsFile("js/SkiFree.js");
 
 $this->registerJs("
 	var pontuacao = 6000;
