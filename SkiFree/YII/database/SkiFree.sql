@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Tempo de geração: 06/06/2018 às 17:31
+-- Tempo de geração: 04/07/2018 às 20:06
 -- Versão do servidor: 5.7.17-0ubuntu0.16.04.1
 -- Versão do PHP: 7.0.15-0ubuntu0.16.04.4
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `SkiFree`
+-- Banco de dados: `Clarice`
 --
 
 -- --------------------------------------------------------
@@ -32,6 +32,15 @@ CREATE TABLE `curso` (
   `sigla` char(4) NOT NULL,
   `descricao` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Fazendo dump de dados para tabela `curso`
+--
+
+INSERT INTO `curso` (`id`, `nome`, `sigla`, `descricao`) VALUES
+(1, 'Ciência da Computação', 'IE08', 'É do IComp.'),
+(2, 'Sistemas de Informação', 'IE11', 'É do IComp também.'),
+(4, 'Engenharia da Computação', 'IE05', 'Era pra ser do IComp, né?');
 
 -- --------------------------------------------------------
 
@@ -78,11 +87,20 @@ CREATE TABLE `user` (
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `id_curso` int(11) NOT NULL,
+  `id_curso` int(11) DEFAULT '1',
   `status` smallint(6) NOT NULL DEFAULT '10',
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Fazendo dump de dados para tabela `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `id_curso`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'ClariceMFC', 'OSiV03OiAzS6XCDQwSYM8iSeT85o5Z7g', '$2y$13$BLflP.wmQGdmg9LX94zVyuUPysyl4G4OcMBuFLEPw6WsZGo01uHty', NULL, 'cmfc@icomp.ufam.edu.br', 1, 10, 1530744787, 1530744787),
+(2, 'Nome', 'gH5-R5sT2T8x2iHhUlXTS48HOjl5alaf', '$2y$13$MtjP5GABDmbPxeav3nQnkeeTIsFeUFVi0.YH9RfENDRxxsqbKi3EG', NULL, 'nome@gmail.com', 2, 10, 1530746843, 1530746843),
+(3, 'Nome2', 'AJKVJin4eZaelNxgUhSUwlT-Zlr1gd5c', '$2y$13$s7L7KprNEubBwWcXuzpQUOSVV9Qz6/sr9RAgcu/2sBxhP2YDaAO2W', NULL, 'nome2@gmail.com', 4, 10, 1530747109, 1530747109);
 
 --
 -- Índices de tabelas apagadas
@@ -125,12 +143,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de tabela `curso`
 --
 ALTER TABLE `curso`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de tabela `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Restrições para dumps de tabelas
 --

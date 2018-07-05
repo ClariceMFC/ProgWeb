@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 $this->registerCssFile("css/estilos.css");
-$this->registerJsFile("js/SkiFree.js");
+$this->registerJsFile("js/Skifree.js");
 
 $this->registerJs("
 	var pontuacao = 6000;

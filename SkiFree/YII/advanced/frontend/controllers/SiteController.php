@@ -13,7 +13,8 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 //use yii\widget            //CLARICE ADD
-//use yii\helpers       //CLARICE ADD find
+use yii\helpers\ArrayHelper;       //CLARICE ADD find
+use common\models\Curso;
 /**
  * Site controller
  */
@@ -165,6 +166,7 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+            'array_cursos' => $array_cursos,
         ]);
     }
 

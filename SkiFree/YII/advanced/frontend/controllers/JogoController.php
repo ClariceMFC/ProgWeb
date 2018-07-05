@@ -4,25 +4,30 @@ namespace frontend\controllers;
 use common\models\Jogada;
 use Yii;
 
-class JogoController extends \yii\web\Controller
-{
-    public function actionIndex()
-    {
+class JogoController extends \yii\web\Controller{
+
+    public function actionIndex(){
         return $this->render('index');
     }
 
-    public function actionRanking()
-    {
-        return $this->render('ranking');
+    public function actionRanking(){
+        $jogadas = Jogada::find()->orderBy("pontuacao DESC")-> all();
+        return $this->render('ranking', [
+            'jogadas' => $jogadas,
+        ]);
     }
 
-    public function actionSave($pontuacao)
-    {
+    public function actionSave($pontuacao){
         $jogada = new Jogada;
         $jogada->pontuacao = $pontuacao;
         $jogada->id_user = Yii::$app->user->id;
-        $jogada->save();
-        return "Deu certoo! =^-^=";
+        
+        if ($jogada->save()){
+            return "Deu certoo! =^-^=";
+        }
+        else {
+            return "Deu erradoo! ;-;";
+        }
     }
 
 }

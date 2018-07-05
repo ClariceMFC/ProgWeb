@@ -3,6 +3,7 @@ namespace frontend\models;
 
 use yii\base\Model;
 use common\models\User;
+use common\models\Curso;
 
 /**
  * Signup form
@@ -34,13 +35,15 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['id_curso', 'required'],
         ];
     }
 
     public function attributeLabels() {                     //CLARICE ADD
         return [                                            //CLARICE ADD
-            'id_curso' => 'Selecione o seu curso'           //CLARICE ADD
-        ]                                                   //CLARICE ADD
+            'id_curso' => 'Selecione o seu curso',           //CLARICE ADD
+        ];                                                   //CLARICE ADD
     }                                                       //CLARICE ADD
 
     /**

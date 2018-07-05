@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'email') ?>
 
-                <?= $form->field($model, 'id_curso')->dropDownList(['autofocus' => true]) ?>
+                <?= $form->field($model, 'id_curso')->dropDownList($array_cursos) ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 

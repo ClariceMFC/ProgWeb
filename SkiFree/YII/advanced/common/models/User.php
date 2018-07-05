@@ -196,4 +196,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function afterFind() {
         $this->created_at = date("d/m/Y", $this->created_at);
     }
+
+    public function attributeLabels() {[
+        'id' => 'ID',
+        'username' => "Usuário",
+        'auth_key' => "Chave de autenticação",
+        'password_hash' => "Chave de espalhamento",
+        'password_reset_token' => "Token de redefinição de senha",
+        'email:email' => "E-mail",
+        'id_curso' => "ID do curso",
+        'status' => "Status",
+        'created_at' => "Criado em",
+        'updated_at' => "Modificado em",
+    ];}
 }
